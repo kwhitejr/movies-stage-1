@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Movies-Stage-1</string>
+    <string name="app_name">Movies</string>
+    <string name="error_message">An error has occurred. Please try again by clicking REFRESH</string>
 </resources>
