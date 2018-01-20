@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 /**
  * Created by kwhi32 on 1/14/18.
  */
@@ -17,40 +19,16 @@ import android.widget.TextView;
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
 
-    private String[] mMovieData;
+    private ArrayList<Movie> mMovies;
+    private Context mContext;
 
     // TODO: Declare MovieAdapterOnClickHandler;
     // TODO: Declare interface MovieAdapterOnClickHandler;
 
     // TODO: Declare MovieAdapter constructor
-    public MovieAdapter() {
-
-    }
-
-    /**
-     * Cache of the children views for a movie list item.
-     */
-    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        public final TextView mMovieTextView;
-
-        public MovieAdapterViewHolder(View view) {
-            super(view);
-            mMovieTextView = (TextView) view.findViewById(R.id.tv_movie_data);
-            view.setOnClickListener(this);
-        }
-
-        /**
-         * Do XXX when child view is clicked.
-         * @param view The view that was clicked.
-         */
-        @Override
-        public void onClick(View view) {
-            int adapterPosition = getAdapterPosition();
-            String movieText = mMovieData[adapterPosition];
-            // TODO: attach ClickHandler
-            return;
-        }
+    public MovieAdapter(Context context, ArrayList<Movie> movies) {
+        mContext = context;
+        mMovies = movies;
     }
 
     /**
@@ -84,22 +62,55 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
      */
     @Override
     public void onBindViewHolder(MovieAdapterViewHolder movieAdapterViewHolder, int position) {
-        String movie = mMovieData[position];
-        movieAdapterViewHolder.mMovieTextView.setText(movie);
+        movieAdapterViewHolder.bindMovieData(mMovies.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mMovieData == null) return 0;
-        return mMovieData.length;
+        if (mMovies == null) return 0;
+        return mMovies.size();
+    }
+
+    /**
+     * Cache of the children views for a movie list item.
+     */
+    public class MovieAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        // TODO: How to use this `@Bind` functionality?
+        // @Bind(R.id.tv_movie_data) TextView mMovieTextView;
+        public final TextView mMovieTextView;
+        private Context mContext; // why is it reporting that its unused?
+
+        public MovieAdapterViewHolder(View itemView) {
+            super(itemView);
+            mMovieTextView = (TextView) itemView.findViewById(R.id.tv_movie_data);
+            mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
+        }
+
+        public void bindMovieData(Movie movie) {
+            mMovieTextView.setText(movie.getTitle());
+        }
+
+        /**
+         * Do XXX when child view is clicked.
+         * @param view The view that was clicked.
+         */
+        @Override
+        public void onClick(View view) {
+            int adapterPosition = getAdapterPosition();
+//            String movieText = mMovieData[adapterPosition];
+            // TODO: attach ClickHandler
+            return;
+        }
     }
 
     /**
      * Set movie data on the MovieAdapter.
      * @param movieData The new movie data to be displayed
      */
-    public void setMovieData(String[] movieData) {
-        mMovieData = movieData;
+    public void setMovieData(ArrayList<Movie> movieData) {
+        mMovies = movieData;
         notifyDataSetChanged();
     }
 }

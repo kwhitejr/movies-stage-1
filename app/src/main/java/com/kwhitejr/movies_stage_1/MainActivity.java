@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -13,6 +14,8 @@ import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
 import com.kwhitejr.movies_stage_1.Utilities.NetworkUtils;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,20 +40,23 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter();
+        mMovieAdapter = new MovieAdapter(getApplicationContext(), new ArrayList<Movie>());
         mRecyclerView.setAdapter(mMovieAdapter);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        loadMovieData();
+        loadMovieData("popular"); // this parameter doesn't go anywhere yet
     }
 
-    private void loadMovieData() {
+    private void loadMovieData(String queryParam) {
+        Log.d(LOG_TAG, "Inside of loadMovieData.");
+
+        // TODO: how to pass the query param to the AsyncTask?
         showMovieDataView();
         new FetchMoviesTask().execute();
     }
 
-    public class FetchMoviesTask extends AsyncTask<String, Void, String[]> {
+    public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         @Override
         protected void onPreExecute() {
@@ -59,23 +65,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected String[] doInBackground(String... strings) {
+        protected ArrayList<Movie> doInBackground(String... strings) {
 
-            String params;
+            Log.d(LOG_TAG, "Inside of doInBackground.");
+            Log.d(LOG_TAG, "`strings` parameter: " + strings);
+
+            String requestParams;
             // Default to `popular` movie query
             if (strings.length == 0) {
-                params = "popular";
+                requestParams = "popular";
             } else {
-                params = strings[0];
+                requestParams = strings[0];
             }
-            URL movieRequestUrl = NetworkUtils.buildMoviesUrl(params);
+//            URL movieRequestUrl = NetworkUtils.buildMoviesUrl(requestParams);
 
             try {
-                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
+//                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
-                String[] simpleJsonMovieData = MovieQueryUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
+                // TODO: remove hardcode requestParams
+                ArrayList<Movie> movieArrayList = MovieQueryUtils.fetchMovieData("popular");
 
-                return simpleJsonMovieData;
+                return movieArrayList;
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -84,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String[] movieData) {
+        protected void onPostExecute(ArrayList<Movie> movieData) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movieData != null) {
                  showMovieDataView();

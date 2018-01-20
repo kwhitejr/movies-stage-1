@@ -34,34 +34,42 @@ public final class MovieQueryUtils {
 
     /**
      *
-     * @param requestType should be `popular` or `top_rated`
+     * @param requestParams should be `popular` or `top_rated`
      * @return
      */
-    public static List<Movie> fetchMovieData(String requestType) {
-        if (requestType != "popular" || requestType != "top_rated") {
-            return null;
-        }
+    public static ArrayList<Movie> fetchMovieData(String requestParams) {
+        Log.d(LOG_TAG, "Inside of fetchMovieData.");
 
-        URL url = NetworkUtils.buildMoviesUrl(requestType);
-        String jsonReponse = null;
+        // TODO: Why is the below check failing?
+//        if (requestParams != "popular" || requestParams != "top_rated") {
+//            Log.d(LOG_TAG, "fetch parameter is invalid");
+//            return null;
+//        }
+
+        URL url = NetworkUtils.buildMoviesUrl(requestParams);
+        Log.d(LOG_TAG, "Built Url: " + url.toString());
+        String jsonResponse = null;
         try {
-            jsonReponse = NetworkUtils.getResponseFromHttpUrl(url);
+            jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
+            if (jsonResponse != null) {
+                Log.d(LOG_TAG, "Data fetch successful: " + jsonResponse);
+            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing the input stream: ", e);
             e.printStackTrace();
         }
 
-        List<Movie> movies = extractMovies(jsonReponse);
+        ArrayList<Movie> movies = extractMovies(jsonResponse);
         return movies;
     }
 
-    private static List<Movie> extractMovies(String response) {
+    private static ArrayList<Movie> extractMovies(String response) {
         if (TextUtils.isEmpty(response)) {
             return null;
         }
 
         /* Empty ArrayList to push Movies into */
-        List<Movie> movies = new ArrayList<>();
+        ArrayList<Movie> movies = new ArrayList<>();
 
         /* Parse the JSON response */
         try {
@@ -85,6 +93,9 @@ public final class MovieQueryUtils {
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
         }
+
+        String testExtraction = movies.get(0).toString();
+        Log.d(LOG_TAG, "ArrayList<Movie> first item: " + testExtraction);
 
         return movies;
     }
