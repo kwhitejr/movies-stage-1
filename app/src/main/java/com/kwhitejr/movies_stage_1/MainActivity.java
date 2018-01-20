@@ -5,12 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.kwhitejr.movies_stage_1.Utilities.MovieJsonUtils;
+import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
 import com.kwhitejr.movies_stage_1.Utilities.NetworkUtils;
 
 import java.net.URL;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
 
-                String[] simpleJsonMovieData = MovieJsonUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
+                String[] simpleJsonMovieData = MovieQueryUtils.getSimpleMovieStringsFromJson(MainActivity.this, jsonMovieResponse);
 
                 return simpleJsonMovieData;
 

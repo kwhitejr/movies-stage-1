@@ -12,7 +12,17 @@ import java.net.HttpURLConnection;
  * Created by kwhi32 on 1/14/18.
  */
 
-public final class MovieJsonUtils {
+public final class MovieQueryUtils {
+
+    private static final String LOG_TAG = MovieQueryUtils.class.getSimpleName();
+
+    /**
+     * Create a private constructor because no one should ever create a {@link MovieQueryUtils} object.
+     * This class is only meant to hold static variables and methods, which can be accessed
+     * directly from the class name MovieQueryUtils (and an object instance of MovieQueryUtils is not needed).
+     */
+    private MovieQueryUtils() {
+    }
 
     public static String[] getSimpleMovieStringsFromJson(Context context, String movieJsonString)
             throws JSONException {
