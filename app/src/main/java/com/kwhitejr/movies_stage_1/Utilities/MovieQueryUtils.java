@@ -1,12 +1,20 @@
 package com.kwhitejr.movies_stage_1.Utilities;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.kwhitejr.movies_stage_1.Movie;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by kwhi32 on 1/14/18.
@@ -22,6 +30,63 @@ public final class MovieQueryUtils {
      * directly from the class name MovieQueryUtils (and an object instance of MovieQueryUtils is not needed).
      */
     private MovieQueryUtils() {
+    }
+
+    /**
+     *
+     * @param requestType should be `popular` or `top_rated`
+     * @return
+     */
+    public static List<Movie> fetchMovieData(String requestType) {
+        if (requestType != "popular" || requestType != "top_rated") {
+            return null;
+        }
+
+        URL url = NetworkUtils.buildMoviesUrl(requestType);
+        String jsonReponse = null;
+        try {
+            jsonReponse = NetworkUtils.getResponseFromHttpUrl(url);
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Error closing the input stream: ", e);
+            e.printStackTrace();
+        }
+
+        List<Movie> movies = extractMovies(jsonReponse);
+        return movies;
+    }
+
+    private static List<Movie> extractMovies(String response) {
+        if (TextUtils.isEmpty(response)) {
+            return null;
+        }
+
+        /* Empty ArrayList to push Movies into */
+        List<Movie> movies = new ArrayList<>();
+
+        /* Parse the JSON response */
+        try {
+            /* TODO: Is it necessary for NetworkUtils to return a String that is then
+            ** reconverted to a JSON object?
+             */
+            JSONObject jsonResponse = new JSONObject(response);
+            JSONArray movieArray = jsonResponse.getJSONArray("results");
+
+            for (int i = 0; i < movieArray.length(); i++) {
+                JSONObject movie = movieArray.getJSONObject(i); // the current movie in the loop
+                String title = movie.getString("title");
+                String releaseDate = movie.getString("release_date");
+                String posterPath = movie.getString("poster_path");
+                String overview = movie.getString("overview");
+                double voteAverage = movie.getDouble("vote_average");
+
+                /* Add current movie data to adapter */
+                movies.add(new Movie(title, releaseDate, posterPath, overview, voteAverage));
+            }
+        } catch (JSONException e) {
+            Log.e(LOG_TAG, "Problem parsing the earthquake JSON results", e);
+        }
+
+        return movies;
     }
 
     public static String[] getSimpleMovieStringsFromJson(Context context, String movieJsonString)
