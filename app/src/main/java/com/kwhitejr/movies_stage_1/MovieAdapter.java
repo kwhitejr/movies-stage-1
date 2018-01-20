@@ -2,10 +2,15 @@ package com.kwhitejr.movies_stage_1;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -18,6 +23,8 @@ import java.util.ArrayList;
  * {@link android.support.v7.widget.RecyclerView}
  */
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapterViewHolder> {
+
+    private static final String LOG_TAG = MovieAdapter.class.getSimpleName();
 
     private ArrayList<Movie> mMovies;
     private Context mContext;
@@ -79,17 +86,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         // TODO: How to use this `@Bind` functionality?
         // @Bind(R.id.tv_movie_data) TextView mMovieTextView;
         public final TextView mMovieTextView;
-        private Context mContext; // why is it reporting that its unused?
+        public final ImageView mMoviePosterImageView;
+        private Context mContext;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
             mMovieTextView = (TextView) itemView.findViewById(R.id.tv_movie_data);
+            mMoviePosterImageView = (ImageView) itemView.findViewById(R.id.image_movie_poster);
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
         }
 
         public void bindMovieData(Movie movie) {
             mMovieTextView.setText(movie.getTitle());
+
+//            String moviePosterUrlString = movie.getPosterPathUrl().toString();
+//            Log.d(LOG_TAG, "Load image from: " + moviePosterUrlString);
+            Log.d(LOG_TAG, "Poster Path String: " + movie.getPosterPathString());
+
+            Picasso.with(mContext).load(movie.getPosterPathString()).into(mMoviePosterImageView);
         }
 
         /**

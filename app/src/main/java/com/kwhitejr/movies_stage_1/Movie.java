@@ -17,11 +17,11 @@ public class Movie {
 
     private String mTitle;
     private String mReleaseDate;
-    private String mPoster;
+    private String mPosterPath;
     private String mOverview;
     private double mVoteAverage;
 
-    private static final String POSTER_PATH_BASE = "http://image.tmdb.org/t/p/";
+    private static final String POSTER_PATH_BASE = "http://image.tmdb.org/t/p";
     private static final String POSTER_PATH_SIZE = "w185";
 
     /**
@@ -35,7 +35,7 @@ public class Movie {
     public Movie(String title, String releaseDate, String poster, String overview, double voteAverage) {
         mTitle = title;
         mReleaseDate = releaseDate;
-        mPoster = poster;
+        mPosterPath = poster;
         mOverview = overview;
         mVoteAverage = voteAverage;
     }
@@ -47,13 +47,12 @@ public class Movie {
 
     /**
      *
-     * @param posterPath
      * @return the URL for the w185 movie poster image
      */
-    public URL getPosterUrl(String posterPath) {
+    public URL getPosterPathUrl() {
         Uri builtUri = Uri.parse(POSTER_PATH_BASE).buildUpon()
                 .appendPath(POSTER_PATH_SIZE)
-                .appendPath(posterPath)
+                .appendPath(mPosterPath)
                 .build();
 
         URL url = null;
@@ -67,6 +66,19 @@ public class Movie {
         Log.v(LOG_TAG, "Built URI " + url);
 
         return url;
+    }
+
+    /**
+     *
+     * @return the URL for the w185 movie poster image
+     */
+    public String getPosterPathString() {
+        String posterPathString = "";
+        posterPathString += POSTER_PATH_BASE;
+        posterPathString += "/" + POSTER_PATH_SIZE;
+        posterPathString += "/" + mPosterPath;
+
+        return posterPathString;
     }
 
 }
