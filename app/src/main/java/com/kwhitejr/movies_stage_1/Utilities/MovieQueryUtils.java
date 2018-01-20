@@ -25,7 +25,11 @@ public final class MovieJsonUtils {
         /* Movie release date */
         final String MOVIE_RELEASE_DATE = "release_date";
 
-        final String MOVIE_MESSAGE_CODE = "status_code";
+        /* Move poster image url */
+        final String MOVIE_POSTER_PATH = "poster_path";
+
+        /* Response object contains a status_code when returning an error */
+        final String ERROR_MESSAGE_CODE = "status_code"; // Returns `34`?
 
         /* String array to hold each movie's data */
         String[] parsedMovieData = null;
@@ -33,9 +37,8 @@ public final class MovieJsonUtils {
         JSONObject movieJson = new JSONObject(movieJsonString);
 
         /* Is there an error? */
-        // TODO: is this correct error code parsing?
-        if (movieJson.has(MOVIE_MESSAGE_CODE)) {
-            int errorCode = movieJson.getInt(MOVIE_MESSAGE_CODE);
+        if (movieJson.has(ERROR_MESSAGE_CODE)) {
+            int errorCode = movieJson.getInt(ERROR_MESSAGE_CODE);
 
             switch (errorCode) {
                 case HttpURLConnection.HTTP_OK:
@@ -56,10 +59,12 @@ public final class MovieJsonUtils {
         for (int i = 0; i < movieArray.length(); i++) {
             String title;
             String releaseDate;
+            String posterImage;
 
             JSONObject movieObject = movieArray.getJSONObject(i);
             title = movieObject.getString(MOVIE_TITLE);
             releaseDate = movieObject.getString(MOVIE_RELEASE_DATE);
+            posterImage = movieObject.getString(MOVIE_POSTER_PATH);
 
             parsedMovieData[i] = title + ", release " + releaseDate;
         }
