@@ -6,6 +6,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -53,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: how to pass the query param to the AsyncTask?
         showMovieDataView();
-        new FetchMoviesTask().execute();
+        new FetchMoviesTask().execute(queryParam);
     }
 
     public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
@@ -70,20 +73,16 @@ public class MainActivity extends AppCompatActivity {
             Log.d(LOG_TAG, "Inside of doInBackground.");
             Log.d(LOG_TAG, "`strings` parameter: " + strings);
 
-            String requestParams;
             // Default to `popular` movie query
+            String requestParams = "popular";
             if (strings.length == 0) {
                 requestParams = "popular";
             } else {
                 requestParams = strings[0];
             }
-//            URL movieRequestUrl = NetworkUtils.buildMoviesUrl(requestParams);
 
             try {
-//                String jsonMovieResponse = NetworkUtils.getResponseFromHttpUrl(movieRequestUrl);
-
-                // TODO: remove hardcode requestParams
-                ArrayList<Movie> movieArrayList = MovieQueryUtils.fetchMovieData("popular");
+                ArrayList<Movie> movieArrayList = MovieQueryUtils.fetchMovieData(requestParams);
 
                 return movieArrayList;
 
@@ -118,5 +117,30 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setVisibility(View.INVISIBLE);
         /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+    }
+
+    /* Create the query-type menu */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sort, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_sort_popular:
+                loadMovieData("popular");
+                return true;
+
+            case R.id.action_sort_rating:
+                loadMovieData("top_rated");
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
