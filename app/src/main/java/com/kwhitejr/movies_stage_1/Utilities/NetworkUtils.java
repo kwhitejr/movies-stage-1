@@ -35,7 +35,7 @@ public final class NetworkUtils {
      * @param typeQuery the type of movies to be queried. `popular` or `top_rated`
      * @return The URL to use to query the movie db service.
      */
-    // TODO: currently hardcoded for v3; make dynamic
+    // NOTE: currently hardcoded for v3; make dynamic
     public static URL buildMoviesUrl(String typeQuery) {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL_V3).buildUpon()
                 .appendPath(API_DOMAIN)

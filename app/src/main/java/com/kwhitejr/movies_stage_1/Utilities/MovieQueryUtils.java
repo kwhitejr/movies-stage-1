@@ -40,11 +40,10 @@ public final class MovieQueryUtils {
     public static ArrayList<Movie> fetchMovieData(String requestParams) {
         Log.d(LOG_TAG, "Inside of fetchMovieData.");
 
-        // TODO: Why is the below check failing?
-//        if (requestParams != "popular" || requestParams != "top_rated") {
-//            Log.d(LOG_TAG, "fetch parameter is invalid");
-//            return null;
-//        }
+        if (requestParams != "popular" && requestParams != "top_rated") {
+            Log.d(LOG_TAG, "fetch parameter is invalid");
+            return null;
+        }
 
         URL url = NetworkUtils.buildMoviesUrl(requestParams);
         Log.d(LOG_TAG, "Built Url: " + url.toString());

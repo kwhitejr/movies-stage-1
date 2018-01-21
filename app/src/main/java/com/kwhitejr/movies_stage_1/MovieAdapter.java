@@ -34,7 +34,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         void onClick(Movie movie);
     }
 
-    // TODO: Declare MovieAdapter constructor
     public MovieAdapter(Context context, ArrayList<Movie> movies, MovieAdapterOnClickHandler clickHandler) {
         mContext = context;
         mMovies = movies;
