@@ -85,23 +85,25 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         // TODO: How to use this `@Bind` functionality?
         // @Bind(R.id.tv_movie_data) TextView mMovieTextView;
-        public final TextView mMovieTextView;
+        public final TextView mMovieTitleTextView;
+        public final TextView mMovieVoteAvgTextView;
         public final ImageView mMoviePosterImageView;
         private Context mContext;
 
         public MovieAdapterViewHolder(View itemView) {
             super(itemView);
-            mMovieTextView = (TextView) itemView.findViewById(R.id.tv_movie_data);
+            mMovieTitleTextView = (TextView) itemView.findViewById(R.id.tv_movie_title);
+            mMovieVoteAvgTextView = (TextView) itemView.findViewById(R.id.tv_movie_vote_avg);
             mMoviePosterImageView = (ImageView) itemView.findViewById(R.id.image_movie_poster);
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
         }
 
         public void bindMovieData(Movie movie) {
-            mMovieTextView.setText(movie.getTitle());
+            double voteAvgDouble = movie.getVoteAverage();
 
-//            String moviePosterUrlString = movie.getPosterPathUrl().toString();
-//            Log.d(LOG_TAG, "Load image from: " + moviePosterUrlString);
+            mMovieTitleTextView.setText(movie.getTitle());
+            mMovieVoteAvgTextView.setText(Double.toString(voteAvgDouble));
             Log.d(LOG_TAG, "Poster Path String: " + movie.getPosterPathString());
 
             Picasso.with(mContext).load(movie.getPosterPathString()).into(mMoviePosterImageView);

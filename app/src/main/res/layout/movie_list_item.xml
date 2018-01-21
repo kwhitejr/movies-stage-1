@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,15 +9,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/image_movie_poster"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         />
 
-    <!--This TextView holds the movie data -->
+    <!--This TextView holds the movie title -->
     <TextView
-        android:id="@+id/tv_movie_data"
-        style="@style/TextAppearance.AppCompat.Large"
+        android:id="@+id/tv_movie_title"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"/>
+        android:layout_alignTop="@id/image_movie_poster"
+        android:layout_alignLeft="@id/image_movie_poster"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"        />
+
+    <!--This TextView holds the movie vote average -->
+    <TextView
+        android:id="@+id/tv_movie_vote_avg"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:background="@drawable/vote_avg_circle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:layout_alignTop="@id/image_movie_poster"
+        android:layout_alignRight="@id/image_movie_poster"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        />
 
     <!--This View serves as a visual divider between list items-->
     <View
@@ -26,4 +50,4 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp" />
 
-</LinearLayout>
+</RelativeLayout>
