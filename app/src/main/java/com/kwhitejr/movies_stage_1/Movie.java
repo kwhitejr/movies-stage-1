@@ -22,7 +22,7 @@ public class Movie {
     private double mVoteAverage;
 
     private static final String POSTER_PATH_BASE = "http://image.tmdb.org/t/p";
-    private static final String POSTER_PATH_SIZE = "w185";
+    private static final String POSTER_PATH_SIZE = "w342";
 
     /**
      * Public constructor for the Movie class.

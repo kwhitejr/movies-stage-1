@@ -1,5 +1,7 @@
 package com.kwhitejr.movies_stage_1;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
-import com.kwhitejr.movies_stage_1.Utilities.NetworkUtils;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.MovieAdapterOnClickHandler {
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private RecyclerView mRecyclerView;
@@ -43,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setHasFixedSize(true);
 
-        mMovieAdapter = new MovieAdapter(getApplicationContext(), new ArrayList<Movie>());
+        mMovieAdapter = new MovieAdapter(getApplicationContext(), new ArrayList<Movie>(), this);
         mRecyclerView.setAdapter(mMovieAdapter);
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
@@ -51,14 +50,31 @@ public class MainActivity extends AppCompatActivity {
         loadMovieData("popular"); // this parameter doesn't go anywhere yet
     }
 
-    private void loadMovieData(String queryParam) {
-        Log.d(LOG_TAG, "Inside of loadMovieData.");
+    /**
+     *
+     * @param movie
+     */
+    @Override
+    public void onClick(Movie movie) {
+        Context context = this;
+        Class destinationClass = MovieDetailsActivity.class;
+        Intent startMovieDetailsActivityIntent = new Intent(context, destinationClass);
 
-        // TODO: how to pass the query param to the AsyncTask?
-        showMovieDataView();
-        new FetchMoviesTask().execute(queryParam);
+        Log.d(LOG_TAG, "Clicked movie title: " + movie.getTitle());
+
+        // TODO: best method for sending whole Movie object?
+        startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
+        startMovieDetailsActivityIntent.putExtra("releaseDate", movie.getReleaseDate());
+        startMovieDetailsActivityIntent.putExtra("rating", Double.toString(movie.getVoteAverage()));
+        startMovieDetailsActivityIntent.putExtra("description", movie.getOverview());
+        startMovieDetailsActivityIntent.putExtra("posterPathString", movie.getPosterPathString());
+        startActivity(startMovieDetailsActivityIntent);
     }
 
+
+    /**
+     * The AsyncTask to fetch all movie data.
+     */
     public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         @Override
@@ -70,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected ArrayList<Movie> doInBackground(String... strings) {
 
-            Log.d(LOG_TAG, "Inside of doInBackground.");
             Log.d(LOG_TAG, "`strings` parameter: " + strings);
 
             // Default to `popular` movie query
@@ -105,6 +120,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* Helper Functions */
+    /**
+     * Execute the fetch movie async task.
+     * @param queryParam defines the type of movies to fetch.
+     */
+    private void loadMovieData(String queryParam) {
+        showMovieDataView();
+        new FetchMoviesTask().execute(queryParam);
+    }
+
     private void showMovieDataView() {
         /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);

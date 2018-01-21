@@ -3,5 +3,9 @@
     <string name="sort_menu">Sort</string>
     <string name="popular">Popular</string>
     <string name="rating">Rating</string>
+    <!-- Movie Details -->
+    <string name="movie_release_date">Released: %1$s</string>
+    <string name="movie_avg_rating">Avg Rating: %1$s</string>
+
     <string name="error_message">An error has occurred. Please try again by clicking REFRESH</string>
 </resources>

@@ -28,14 +28,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
     private ArrayList<Movie> mMovies;
     private Context mContext;
+    private final MovieAdapterOnClickHandler mClickHandler;
 
-    // TODO: Declare MovieAdapterOnClickHandler;
-    // TODO: Declare interface MovieAdapterOnClickHandler;
+    public interface MovieAdapterOnClickHandler {
+        void onClick(Movie movie);
+    }
 
     // TODO: Declare MovieAdapter constructor
-    public MovieAdapter(Context context, ArrayList<Movie> movies) {
+    public MovieAdapter(Context context, ArrayList<Movie> movies, MovieAdapterOnClickHandler clickHandler) {
         mContext = context;
         mMovies = movies;
+        mClickHandler = clickHandler;
     }
 
     /**
@@ -101,10 +104,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
 
         public void bindMovieData(Movie movie) {
             double voteAvgDouble = movie.getVoteAverage();
-
             mMovieTitleTextView.setText(movie.getTitle());
             mMovieVoteAvgTextView.setText(Double.toString(voteAvgDouble));
-            Log.d(LOG_TAG, "Poster Path String: " + movie.getPosterPathString());
 
             Picasso.with(mContext).load(movie.getPosterPathString()).into(mMoviePosterImageView);
         }
@@ -116,9 +117,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieAdapter
         @Override
         public void onClick(View view) {
             int adapterPosition = getAdapterPosition();
-//            String movieText = mMovieData[adapterPosition];
-            // TODO: attach ClickHandler
-            return;
+            Movie movie = mMovies.get(adapterPosition);
+            mClickHandler.onClick(movie);
         }
     }
 
