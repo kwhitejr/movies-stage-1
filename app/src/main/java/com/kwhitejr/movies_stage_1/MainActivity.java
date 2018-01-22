@@ -3,10 +3,13 @@ package com.kwhitejr.movies_stage_1;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -38,8 +41,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview_movies);
         mErrorMessageDisplay = (TextView) findViewById(R.id.tv_error_message_display);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(layoutManager);
+        int gridColumns = calculateNoOfColumns(this);
+        LinearLayoutManager gridLayoutManager = new GridLayoutManager(this, gridColumns);
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mRecyclerView.setHasFixedSize(true);
 
         mMovieAdapter = new MovieAdapter(getApplicationContext(), new ArrayList<Movie>(), this);
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         mLoadingIndicator = (ProgressBar) findViewById(R.id.pb_loading_indicator);
 
-        loadMovieData("popular"); // this parameter doesn't go anywhere yet
+        loadMovieData("popular");
     }
 
     /**
@@ -63,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Log.d(LOG_TAG, "Clicked movie title: " + movie.getTitle());
 
         // TODO: best method for sending whole Movie object?
+//        startMovieDetailsActivityIntent.putExtra("movie", (Parcelable) movie);
+
         startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
         startMovieDetailsActivityIntent.putExtra("releaseDate", movie.getReleaseDate());
         startMovieDetailsActivityIntent.putExtra("rating", Double.toString(movie.getVoteAverage()));
@@ -119,6 +125,32 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         }
     }
 
+    /* Create the menu */
+    // TODO: refactor menu selector; why isn't "Sort" showing?
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.sort, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_sort_popular:
+                loadMovieData("popular");
+                return true;
+
+            case R.id.action_sort_rating:
+                loadMovieData("top_rated");
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     /* Helper Functions */
     /**
      * Execute the fetch movie async task.
@@ -143,28 +175,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
-    /* Create the query-type menu */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.sort, menu);
-        return true;
+    public static int calculateNoOfColumns(Context context) {
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        int scalingFactor = 180;
+        int noOfColumns = (int) (dpWidth / scalingFactor);
+        return noOfColumns;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
-            case R.id.action_sort_popular:
-                loadMovieData("popular");
-                return true;
-
-            case R.id.action_sort_rating:
-                loadMovieData("top_rated");
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

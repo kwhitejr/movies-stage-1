@@ -42,6 +42,25 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
         if (intentThatStartedThisActivity != null) {
 
+            // TODO: java.lang.ClassCastException: com.kwhitejr.movies_stage_1.Movie cannot be cast to android.os.Parcelable
+            /*
+            if (intentThatStartedThisActivity.hasExtra("movie")) {
+                mMovie = intentThatStartedThisActivity.getParcelableExtra("movie");
+
+                String releaseDate = mMovie.getReleaseDate();
+                releaseDate = String.format(res.getString(R.string.movie_release_date), releaseDate);
+
+                String rating = Double.toString(mMovie.getVoteAverage());
+                rating = String.format(res.getString(R.string.movie_avg_rating), rating);
+
+                Picasso.with(getApplicationContext()).load(mMovie.getPosterPathString()).into(mMoviePoster);
+                mMovieTitleTextView.setText(mMovie.getTitle());
+                mMovieReleaseDateTextView.setText(releaseDate);
+                mMovieRatingTextView.setText(rating);
+                mMovieDescriptionTextView.setText(mMovie.getOverview());
+            }
+            */
+
             if (intentThatStartedThisActivity.hasExtra("posterPathString")) {
                 String posterPath = intentThatStartedThisActivity.getStringExtra("posterPathString");
 
@@ -69,6 +88,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 String description = intentThatStartedThisActivity.getStringExtra("description");
                 mMovieDescriptionTextView.setText(description);
             }
+
         }
     }
 }

@@ -21,10 +21,10 @@
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/image_movie_poster"
+        android:layout_alignParentBottom="@id/image_movie_poster"
         android:layout_alignLeft="@id/image_movie_poster"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"        />
+        android:layout_marginTop="16dp" />
 
     <!--This TextView holds the movie vote average -->
     <TextView
@@ -40,13 +40,6 @@
         android:layout_alignRight="@id/image_movie_poster"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        />
-
-    <!--This View serves as a visual divider between list items-->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#dadada"
         />
 
 </RelativeLayout>

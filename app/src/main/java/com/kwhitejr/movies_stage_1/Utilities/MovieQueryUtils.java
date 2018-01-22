@@ -46,13 +46,9 @@ public final class MovieQueryUtils {
         }
 
         URL url = NetworkUtils.buildMoviesUrl(requestParams);
-        Log.d(LOG_TAG, "Built Url: " + url.toString());
         String jsonResponse = null;
         try {
             jsonResponse = NetworkUtils.getResponseFromHttpUrl(url);
-            if (jsonResponse != null) {
-                Log.d(LOG_TAG, "Data fetch successful: " + jsonResponse);
-            }
         } catch (IOException e) {
             Log.e(LOG_TAG, "Error closing the input stream: ", e);
             e.printStackTrace();
