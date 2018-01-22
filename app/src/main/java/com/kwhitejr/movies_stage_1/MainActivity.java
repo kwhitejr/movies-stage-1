@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         Log.d(LOG_TAG, "Clicked movie title: " + movie.getTitle());
 
-        // TODO: best method for sending whole Movie object?
+        // TODO: best method for sending whole Movie objec?
 //        startMovieDetailsActivityIntent.putExtra("movie", (Parcelable) movie);
 
         startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
