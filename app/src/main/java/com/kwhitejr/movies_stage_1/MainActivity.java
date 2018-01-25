@@ -2,6 +2,8 @@ package com.kwhitejr.movies_stage_1;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.kwhitejr.movies_stage_1.Utilities.MovieAsyncTask;
 import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
 
 import java.util.ArrayList;
@@ -31,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +68,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
 
         Log.d(LOG_TAG, "Clicked movie title: " + movie.getTitle());
 
-        // TODO: best method for sending whole Movie objec?
-//        startMovieDetailsActivityIntent.putExtra("movie", (Parcelable) movie);
+        startMovieDetailsActivityIntent.putExtra("movie", (Parcelable) movie);
 
-        startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
-        startMovieDetailsActivityIntent.putExtra("releaseDate", movie.getReleaseDate());
-        startMovieDetailsActivityIntent.putExtra("rating", Double.toString(movie.getVoteAverage()));
-        startMovieDetailsActivityIntent.putExtra("description", movie.getOverview());
-        startMovieDetailsActivityIntent.putExtra("posterPathString", movie.getPosterPathString());
+//        startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
+//        startMovieDetailsActivityIntent.putExtra("releaseDate", movie.getReleaseDate());
+//        startMovieDetailsActivityIntent.putExtra("rating", Double.toString(movie.getVoteAverage()));
+//        startMovieDetailsActivityIntent.putExtra("description", movie.getOverview());
+//        startMovieDetailsActivityIntent.putExtra("posterPathString", movie.getPosterPathString());
         startActivity(startMovieDetailsActivityIntent);
     }
 
@@ -81,36 +82,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
     /**
      * The AsyncTask to fetch all movie data.
      */
-    public class FetchMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+    public class MainActivityMovieAsyncTask extends MovieAsyncTask {
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             mLoadingIndicator.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected ArrayList<Movie> doInBackground(String... strings) {
-
-            Log.d(LOG_TAG, "`strings` parameter: " + strings);
-
-            // Default to `popular` movie query
-            String requestParams = "popular";
-            if (strings.length == 0) {
-                requestParams = "popular";
-            } else {
-                requestParams = strings[0];
-            }
-
-            try {
-                ArrayList<Movie> movieArrayList = MovieQueryUtils.fetchMovieData(requestParams);
-
-                return movieArrayList;
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
         }
 
         @Override
@@ -158,20 +135,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
      */
     private void loadMovieData(String queryParam) {
         showMovieDataView();
-        new FetchMoviesTask().execute(queryParam);
+
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        if (isConnected) {
+            new MainActivityMovieAsyncTask().execute(queryParam);
+        }
     }
 
     private void showMovieDataView() {
-        /* First, make sure the error is invisible */
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
-        /* Then, make sure the weather data is visible */
         mRecyclerView.setVisibility(View.VISIBLE);
     }
 
     private void showErrorMessage() {
-        /* First, hide the currently visible data */
         mRecyclerView.setVisibility(View.INVISIBLE);
-        /* Then, show the error */
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
 
@@ -182,5 +165,5 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         int noOfColumns = (int) (dpWidth / scalingFactor);
         return noOfColumns;
     }
-
+    /* End Helper Functions */
 }
