@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         mMovieReleaseDateTextView = (TextView) findViewById(R.id.tv_movie_details_release_date);
         mMovieRatingTextView = (TextView) findViewById(R.id.tv_movie_details_rating);
         mMovieDescriptionTextView = (TextView) findViewById(R.id.tv_movie_details_description);
+        mMovieDescriptionTextView.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intentThatStartedThisActivity = getIntent();
         Resources res = getResources();

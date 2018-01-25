@@ -51,6 +51,7 @@
         android:paddingLeft="16dp"
         android:textSize="22sp"
         android:textColor="@color/lightGray"
+        android:scrollbars="vertical"
         tools:text="This is the very long description that never ends and ideally takes up a whole lot of space but who can say really until we have a good test." />
 
 </LinearLayout>

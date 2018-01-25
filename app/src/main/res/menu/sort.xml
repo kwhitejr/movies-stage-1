@@ -4,20 +4,15 @@
     xmlns:app="http://schemas/android.com/apk/res-auto"
     >
     <item
-        android:id="@+id/sort_movies"
-        android:title="@string/sort_menu"
+        android:id="@+id/action_sort_popular"
+        android:title="@string/popular"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
-        >
-        <menu>
-            <item
-                android:id="@+id/action_sort_popular"
-                android:title="@string/popular">
-            </item>
-            <item
-                android:id="@+id/action_sort_rating"
-                android:title="@string/rating">
-            </item>
-        </menu>
-    </item>
+        />
+    <item
+        android:id="@+id/action_sort_rating"
+        android:title="@string/rating"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom"
+        />
 </menu>
