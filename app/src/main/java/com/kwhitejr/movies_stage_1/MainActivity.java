@@ -66,15 +66,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Movi
         Class destinationClass = MovieDetailsActivity.class;
         Intent startMovieDetailsActivityIntent = new Intent(context, destinationClass);
 
-        Log.d(LOG_TAG, "Clicked movie title: " + movie.getTitle());
-
         startMovieDetailsActivityIntent.putExtra("movie", (Parcelable) movie);
-
-//        startMovieDetailsActivityIntent.putExtra("title", movie.getTitle());
-//        startMovieDetailsActivityIntent.putExtra("releaseDate", movie.getReleaseDate());
-//        startMovieDetailsActivityIntent.putExtra("rating", Double.toString(movie.getVoteAverage()));
-//        startMovieDetailsActivityIntent.putExtra("description", movie.getOverview());
-//        startMovieDetailsActivityIntent.putExtra("posterPathString", movie.getPosterPathString());
         startActivity(startMovieDetailsActivityIntent);
     }
 

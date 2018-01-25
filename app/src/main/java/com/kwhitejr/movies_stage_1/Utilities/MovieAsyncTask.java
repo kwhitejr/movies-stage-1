@@ -19,20 +19,6 @@ import java.util.ArrayList;
 public class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>>{
 
     private static final String LOG_TAG = MovieAsyncTask.class.getSimpleName();
-//    private Activity mActivity;
-//    private ProgressBar mLoadingIndicator = (ProgressBar) mActivity.findViewById(R.id.pb_loading_indicator);
-    ;
-
-//    public MovieAsyncTask(Activity activity) {
-//        mActivity = activity;
-//    }
-
-    // TODO: are these Overrides superfluous?
-//    @Override
-//    protected void onPreExecute() {
-//        super.onPreExecute();
-//        mLoadingIndicator.setVisibility(View.VISIBLE);
-//    }
 
     @Override
     protected ArrayList<Movie> doInBackground(String... strings) {
@@ -57,15 +43,4 @@ public class MovieAsyncTask extends AsyncTask<String, Void, ArrayList<Movie>>{
             return null;
         }
     }
-
-//    @Override
-//    protected void onPostExecute(ArrayList<Movie> movieData) {
-//        mLoadingIndicator.setVisibility(View.INVISIBLE);
-//        if (movieData != null) {
-//            showMovieDataView();
-//            mMovieAdapter.setMovieData(movieData);
-//        } else {
-//            showErrorMessage();
-//        }
-//    }
 }

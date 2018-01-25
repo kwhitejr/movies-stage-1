@@ -41,9 +41,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         Resources res = getResources();
 
         if (intentThatStartedThisActivity != null) {
-
-            // TODO: java.lang.ClassCastException: com.kwhitejr.movies_stage_1.Movie cannot be cast to android.os.Parcelable
-
             if (intentThatStartedThisActivity.hasExtra("movie")) {
                 mMovie = intentThatStartedThisActivity.getParcelableExtra("movie");
 
@@ -59,36 +56,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 mMovieRatingTextView.setText(rating);
                 mMovieDescriptionTextView.setText(mMovie.getOverview());
             }
-
-            /*
-            if (intentThatStartedThisActivity.hasExtra("posterPathString")) {
-                String posterPath = intentThatStartedThisActivity.getStringExtra("posterPathString");
-
-                Picasso.with(getApplicationContext()).load(posterPath).into(mMoviePoster);
-            }
-
-            if (intentThatStartedThisActivity.hasExtra("title")) {
-                String title = intentThatStartedThisActivity.getStringExtra("title");
-                mMovieTitleTextView.setText(title);
-            }
-
-            if (intentThatStartedThisActivity.hasExtra("releaseDate")) {
-                String releaseDate = intentThatStartedThisActivity.getStringExtra("releaseDate");
-                releaseDate = String.format(res.getString(R.string.movie_release_date), releaseDate);
-                mMovieReleaseDateTextView.setText(releaseDate);
-            }
-
-            if (intentThatStartedThisActivity.hasExtra("rating")) {
-                String rating = intentThatStartedThisActivity.getStringExtra("rating");
-                rating = String.format(res.getString(R.string.movie_avg_rating), rating);
-                mMovieRatingTextView.setText(rating);
-            }
-
-            if (intentThatStartedThisActivity.hasExtra("description")) {
-                String description = intentThatStartedThisActivity.getStringExtra("description");
-                mMovieDescriptionTextView.setText(description);
-            }
-            */
         }
     }
 }
