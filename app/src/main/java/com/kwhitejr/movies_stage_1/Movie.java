@@ -1,6 +1,8 @@
 package com.kwhitejr.movies_stage_1;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.kwhitejr.movies_stage_1.Utilities.MovieQueryUtils;
@@ -12,7 +14,7 @@ import java.net.URL;
  * Created by kwhi32 on 1/20/18.
  */
 
-public class Movie {
+public class Movie implements Parcelable {
     private static final String LOG_TAG = Movie.class.getSimpleName();
 
     private String mTitle;
@@ -81,4 +83,37 @@ public class Movie {
         return posterPathString;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(mTitle);
+        parcel.writeString(mReleaseDate);
+        parcel.writeString(mOverview);
+        parcel.writeString(mPosterPath);
+        parcel.writeDouble(mVoteAverage);
+    }
+
+    private Movie(Parcel in) {
+        mTitle = in.readString();
+        mReleaseDate = in.readString();
+        mOverview = in.readString();
+        mPosterPath = in.readString();
+        mVoteAverage = in.readDouble();
+    }
+
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
+        @Override
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        @Override
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

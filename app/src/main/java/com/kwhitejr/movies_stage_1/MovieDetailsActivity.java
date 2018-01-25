@@ -43,7 +43,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         if (intentThatStartedThisActivity != null) {
 
             // TODO: java.lang.ClassCastException: com.kwhitejr.movies_stage_1.Movie cannot be cast to android.os.Parcelable
-            /*
+
             if (intentThatStartedThisActivity.hasExtra("movie")) {
                 mMovie = intentThatStartedThisActivity.getParcelableExtra("movie");
 
@@ -59,8 +59,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 mMovieRatingTextView.setText(rating);
                 mMovieDescriptionTextView.setText(mMovie.getOverview());
             }
-            */
 
+            /*
             if (intentThatStartedThisActivity.hasExtra("posterPathString")) {
                 String posterPath = intentThatStartedThisActivity.getStringExtra("posterPathString");
 
@@ -88,7 +88,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 String description = intentThatStartedThisActivity.getStringExtra("description");
                 mMovieDescriptionTextView.setText(description);
             }
-
+            */
         }
     }
 }
