@@ -18,7 +18,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
 
     private static final String LOG_TAG = MovieDetailsActivity.class.getSimpleName();
 
-    // TODO: intent should populate mMovie with extra
     private Movie mMovie;
     private ImageView mMoviePoster;
     private TextView mMovieTitleTextView;
@@ -50,6 +49,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 String rating = Double.toString(mMovie.getVoteAverage());
                 rating = String.format(res.getString(R.string.movie_avg_rating), rating);
 
+                // TODO: how can images be cached so that its not necessary to make async load each time?
                 Picasso.with(getApplicationContext()).load(mMovie.getPosterPathString()).into(mMoviePoster);
                 mMovieTitleTextView.setText(mMovie.getTitle());
                 mMovieReleaseDateTextView.setText(releaseDate);

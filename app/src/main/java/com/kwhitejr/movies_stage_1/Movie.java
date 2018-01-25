@@ -49,7 +49,7 @@ public class Movie implements Parcelable {
 
     /**
      *
-     * @return the URL for the w185 movie poster image
+     * @return the URL for the movie poster image
      */
     public URL getPosterPathUrl() {
         Uri builtUri = Uri.parse(POSTER_PATH_BASE).buildUpon()
@@ -72,7 +72,7 @@ public class Movie implements Parcelable {
 
     /**
      *
-     * @return the URL for the w185 movie poster image
+     * @return the URL as String for the movie poster image
      */
     public String getPosterPathString() {
         String posterPathString = "";
@@ -83,6 +83,7 @@ public class Movie implements Parcelable {
         return posterPathString;
     }
 
+    /* Implement Parcelable */
     @Override
     public int describeContents() {
         return 0;
